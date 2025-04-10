@@ -8,6 +8,7 @@ import RegisterScreen from './screens/RegisterScreen.js';
 import SettingsScreen from './screens/SettingsScreen.js';
 import NotificationsScreen from './screens/NotificationsScreen.js';
 import PorfileScreen from './screens/PorfileScreen.js';
+import ChatBotScreen from './screens/ChatBotScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -21,8 +22,7 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name="Profile" component={PorfileScreen} />
         <Stack.Screen options={{headerShown: false}} name="Settings" component={SettingsScreen} />
         <Stack.Screen options={{headerShown: false}} name="Notifications" component={NotificationsScreen} />
-
-      </Stack.Navigator>
+        <Stack.Screen options={{headerShown: false}} name="ChatBot" component={ChatBotScreen} /></Stack.Navigator>
     </NavigationContainer>
   );
 }

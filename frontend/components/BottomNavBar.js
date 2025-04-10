@@ -13,6 +13,7 @@ export default function BottomNavBar() {
     { name: 'Notifications', icon: 'notifications' },
     { name: 'Profile', icon: 'person' },
     { name: 'Settings', icon: 'settings' },
+    { name: 'ChatBot', icon: 'chatbubbles' },
   ];
 
   return (
