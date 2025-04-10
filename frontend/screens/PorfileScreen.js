@@ -1,97 +1,118 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// screens/ProfileScreen.js
+import React from 'react';
+import { View, Text, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
+import BottomNavBar from '../components/BottomNavBar';
 
-export default function PorfileScreen  () {
-        const navigation = useNavigation();
-        const route = useRoute();
+const posts = [
+  'https://via.placeholder.com/150/92c952',
+  'https://via.placeholder.com/150/771796',
+  'https://via.placeholder.com/150/24f355',
+  'https://via.placeholder.com/150/d32776',
+  'https://via.placeholder.com/150/f66b97',
+  'https://via.placeholder.com/150/56a8c2',
+];
+
+export default function ProfileScreen() {
   return (
-  <View style={styles.container}>
-          {/* Texto principal */}
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>Welcome to Porfile Screen!</Text>
-          </View>
-    
-          {/* Iconos como botones */}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-                      onPress={() => navigation.navigate('Home')}
-                    >
-                      <Ionicons
-                        name="home"
-                        size={25}
-                        color={route.name === 'Home' ? 'black' : '#777'} // Íconos inactivos en gris oscuro
-                        style={[styles.icon, route.name === 'Home' && styles.activeIcon]}
-                      />
-                    </TouchableOpacity>
-                    
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Notifications')}
-            >
-              <Ionicons
-                name="notifications"
-                size={25}
-                color={route.name === 'Notifications' ? 'black' : '#777'} // Íconos inactivos en gris oscuro
-                style={[styles.icon, route.name === 'Notifications' && styles.activeIcon]}
-              />
-            </TouchableOpacity>
-    
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Profile')}
-            >
-              <Ionicons
-                name="person"
-                size={25}
-                color={route.name === 'Profile' ? 'black' : '#777'}
-                style={[styles.icon, route.name === 'Profile' && styles.activeIcon]}
-              />
-            </TouchableOpacity>
-    
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Settings')}
-            >
-              <Ionicons
-                name="settings"
-                size={25}
-                color={route.name === 'Settings' ? 'black' : '#777'}
-                style={[styles.icon, route.name === 'Settings' && styles.activeIcon]}
-              />
-            </TouchableOpacity>
+    <View style={styles.container}>
+      {/* Perfil arriba */}
+      <View style={styles.profileHeader}>
+        <Image
+          source={{ uri: 'https://wallpaperaccess.com/full/13613086.jpg' }}
+          style={styles.avatar}
+        />
+        <View style={styles.info}>
+          <Text style={styles.username}>@diego_dev</Text>
+          <Text style={styles.bio}>Desarrollador apasionado por la tecnología 🚀</Text>
+          <View style={styles.stats}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>12</Text>
+              <Text style={styles.statLabel}>Posts</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>134</Text>
+              <Text style={styles.statLabel}>Followers</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>180</Text>
+              <Text style={styles.statLabel}>Following</Text>
+            </View>
           </View>
         </View>
-  )
+      </View>
+
+      {/* Grid de publicaciones */}
+      <FlatList
+        data={posts}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={3}
+        renderItem={({ item }) => (
+          <Image source={{ uri: item }} style={styles.postImage} />
+        )}
+        contentContainerStyle={styles.postGrid}
+        showsVerticalScrollIndicator={false}
+      />
+
+      {/* Barra inferior */}
+      <BottomNavBar />
+    </View>
+  );
 }
 
+const windowWidth = Dimensions.get('window').width;
+const imageSize = windowWidth / 3;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white', // Fondo blanco
-    },
-    textContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      paddingVertical: 10,
-      borderTopWidth: 1,
-      borderTopColor: '#CCC',
-    },
-    icon: {
-      padding: 10, // Espaciado táctil
-      borderRadius: 8, // Redondeo sutil para mejorar visibilidad
-    },
-    activeIcon: {
-      backgroundColor: '#E6E6E6', // Fondo gris claro para ícono activo
-    },
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  profileHeader: {
+    flexDirection: 'row',
+    padding: 15,
+    borderBottomWidth: 0.5,
+    borderColor: '#ccc',
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+  },
+  info: {
+    flex: 1,
+    marginLeft: 15,
+    justifyContent: 'center',
+  },
+  username: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  bio: {
+    color: '#666',
+    marginTop: 4,
+    marginBottom: 10,
+  },
+  stats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
+  statItem: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  statLabel: {
+    color: '#777',
+    fontSize: 12,
+  },
+  postGrid: {
+    paddingBottom: 70,
+  },
+  postImage: {
+    width: imageSize,
+    height: imageSize,
+  },
+});

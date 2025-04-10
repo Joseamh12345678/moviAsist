@@ -1,95 +1,79 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import BottomNavBar from '../components/BottomNavBar';
 
-export default function SettingsScreen()  {
-    const navigation = useNavigation();
-    const route = useRoute();
+export default function SettingsScreen() {
+  const handlePress = (option) => {
+    Alert.alert(`${option}`, `Has presionado: ${option}`);
+  };
+
   return (
-  <View style={styles.container}>
-        {/* Texto principal */}
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>Welcome to Settings Screen!</Text>
-        </View>
-  
-        {/* Iconos como botones */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-                    onPress={() => navigation.navigate('Home')}
-                  >
-                    <Ionicons
-                      name="home"
-                      size={25}
-                      color={route.name === 'Home' ? 'black' : '#777'} // Íconos inactivos en gris oscuro
-                      style={[styles.icon, route.name === 'Home' && styles.activeIcon]}
-                    />
-                  </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Notifications')}
-          >
-            <Ionicons
-              name="notifications"
-              size={25}
-              color={route.name === 'Notifications' ? 'black' : '#777'} // Íconos inactivos en gris oscuro
-              style={[styles.icon, route.name === 'Notifications' && styles.activeIcon]}
-            />
-          </TouchableOpacity>
-  
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Profile')}
-          >
-            <Ionicons
-              name="person"
-              size={25}
-              color={route.name === 'Profile' ? 'black' : '#777'}
-              style={[styles.icon, route.name === 'Profile' && styles.activeIcon]}
-            />
-          </TouchableOpacity>
-  
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Settings')}
-          >
-            <Ionicons
-              name="settings"
-              size={25}
-              color={route.name === 'Settings' ? 'black' : '#777'}
-              style={[styles.icon, route.name === 'Settings' && styles.activeIcon]}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-  )
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <Text style={styles.title}>Configuración</Text>
+
+        <TouchableOpacity style={styles.option} onPress={() => handlePress('Cuenta')}>
+          <Ionicons name="person-circle-outline" size={24} color="#555" />
+          <Text style={styles.optionText}>Cuenta</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.option} onPress={() => handlePress('Notificaciones')}>
+          <Ionicons name="notifications-outline" size={24} color="#555" />
+          <Text style={styles.optionText}>Notificaciones</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.option} onPress={() => handlePress('Privacidad')}>
+          <Ionicons name="lock-closed-outline" size={24} color="#555" />
+          <Text style={styles.optionText}>Privacidad</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.option} onPress={() => handlePress('Tema oscuro')}>
+          <Ionicons name="moon-outline" size={24} color="#555" />
+          <Text style={styles.optionText}>Tema oscuro</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.option, styles.logout]} onPress={() => handlePress('Cerrar sesión')}>
+          <Ionicons name="exit-outline" size={24} color="red" />
+          <Text style={[styles.optionText, { color: 'red' }]}>Cerrar sesión</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      <BottomNavBar />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white', // Fondo blanco
-    },
-    textContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      paddingVertical: 10,
-      borderTopWidth: 1,
-      borderTopColor: '#CCC',
-    },
-    icon: {
-      padding: 10, // Espaciado táctil
-      borderRadius: 8, // Redondeo sutil para mejorar visibilidad
-    },
-    activeIcon: {
-      backgroundColor: '#E6E6E6', // Fondo gris claro para ícono activo
-    },
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  scroll: {
+    padding: 20,
+    paddingBottom: 80, // espacio para el BottomNavBar
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 25,
+  },
+  option: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  optionText: {
+    marginLeft: 15,
+    fontSize: 16,
+    color: '#333',
+  },
+  logout: {
+    marginTop: 30,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingTop: 20,
+  },
+});

@@ -1,66 +1,61 @@
+// screens/HomeScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
+import BottomNavBar from '../components/BottomNavBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+
+const posts = [
+  {
+    id: '1',
+    user: 'john_doe',
+    description: 'El camion tardo demaciado. ☀️',
+    image: 'https://th.bing.com/th/id/OIP.r0RjYNdJtwfoJY2y8t7iVQHaHJ?w=201&h=194&c=7&r=0&o=5&dpr=1.5&pid=1.7',
+    likes: 120,
+    comments: 14,
+  },
+  {
+    id: '2',
+    user: 'jane_smith',
+    description: 'El chofer estaba menso. 😍',
+    image: 'https://s1.ppllstatics.com/ideal/www/multimedia/202212/20/media/cortadas/camion-volcado-kWPI-U19016693179w7C-1248x770@Ideal.jpg',
+    likes: 89,
+    comments: 8,
+  },
+  {
+    id: '3',
+    user: 'the_traveler',
+    description: 'Se perdio el chofer 🚗🗺️',
+    image: 'https://cdn.verbub.com/images/no-mms-este-no-va-pa-el-centro-16538.jpg',
+    likes: 200,
+    comments: 33,
+  },
+];
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
-  const route = useRoute();
+  const renderItem = ({ item }) => (
+    <View style={styles.post}>
+      <Text style={styles.username}>{item.user}</Text>
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <View style={styles.actions}>
+        <Ionicons name="heart-outline" size={24} style={styles.icon} />
+        <Ionicons name="chatbubble-outline" size={24} style={styles.icon} />
+      </View>
+      <Text style={styles.likes}>{item.likes} likes</Text>
+      <Text style={styles.description}>{item.description}</Text>
+      <Text style={styles.comments}>{item.comments} comments</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      {/* Texto principal */}
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>Welcome to Home Screen!</Text>
-      </View>
-
-      {/* Iconos como botones */}
-      <View style={styles.buttonContainer}>
-      <TouchableOpacity
-          onPress={() => navigation.navigate('Home')}
-        >
-          <Ionicons
-            name="home"
-            size={25}
-            color={route.name === 'Home' ? 'black' : '#777'} // Íconos inactivos en gris oscuro
-            style={[styles.icon, route.name === 'Home' && styles.activeIcon]}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Notifications')}
-        >
-          <Ionicons
-            name="notifications"
-            size={25}
-            color={route.name === 'Notifications' ? 'black' : '#777'} // Íconos inactivos en gris oscuro
-            style={[styles.icon, route.name === 'Notifications' && styles.activeIcon]}
-          />
-        </TouchableOpacity>
-        
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
-        >
-          <Ionicons
-            name="person"
-            size={25}
-            color={route.name === 'Profile' ? 'black' : '#777'}
-            style={[styles.icon, route.name === 'Profile' && styles.activeIcon]}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <Ionicons
-            name="settings"
-            size={25}
-            color={route.name === 'Settings' ? 'black' : '#777'}
-            style={[styles.icon, route.name === 'Settings' && styles.activeIcon]}
-          />
-        </TouchableOpacity>
-      </View>
+      <FlatList
+        data={posts}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
+      />
+      <BottomNavBar />
     </View>
   );
 }
@@ -68,30 +63,43 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white', // Fondo blanco
+    backgroundColor: '#fff',
   },
-  textContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  list: {
+    paddingBottom: 70, 
   },
-  title: {
-    fontSize: 18,
+  post: {
+    marginBottom: 20,
+    padding: 10,
+    borderBottomWidth: 0.5,
+    borderColor: '#ccc',
+  },
+  username: {
     fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5,
   },
-  buttonContainer: {
+  image: {
+    width: '100%',
+    height: 300,
+    borderRadius: 10,
+  },
+  actions: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#CCC',
+    marginTop: 8,
   },
   icon: {
-    padding: 10, // Espaciado táctil
-    borderRadius: 8, // Redondeo sutil para mejorar visibilidad
+    marginRight: 10,
   },
-  activeIcon: {
-    backgroundColor: '#E6E6E6', // Fondo gris claro para ícono activo
+  likes: {
+    fontWeight: 'bold',
+    marginTop: 5,
+  },
+  description: {
+    marginTop: 4,
+  },
+  comments: {
+    color: '#555',
+    marginTop: 2,
   },
 });
